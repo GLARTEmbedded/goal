@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opportunity Fund</title>
+
+<style>
+body {
+  font-family: Arial;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+  background: #f7f7f7;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  margin-top: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.bar {
+  height: 20px;
+  background: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.fill {
+  height: 100%;
+  background: #4caf50;
+  width: 0%;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 10px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+}
+
+.add { background: #4caf50; color: white; }
+.spend { background: #f44336; color: white; }
+.reset { background: #777; color: white; }
+
+input {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>📸 Opportunity Fund</h2>
+
+<div class="card">
+  <h3 id="balance">£0</h3>
+  <p>Goal: £1000</p>
+
+  <div class="bar">
+    <div id="fill" class="fill"></div>
+  </div>
+
+  <p id="status">Keep saving</p>
+</div>
+
+<div class="card">
+  <input id="amount" type="number" value="100"/>
+
+  <button class="add" onclick="add()">+ Add</button>
+  <button class="spend" onclick="spend()">- Spend</button>
+  <button class="reset" onclick="resetBalance()">Reset</button>
+</div>
+
+<script>
+let balance = localStorage.getItem("balance") || 0;
+balance = Number(balance);
+
+const GOAL = 1000;
+
+function update() {
+  document.getElementById("balance").innerText = "£" + balance;
+
+  let percent = Math.min((balance / GOAL) * 100, 100);
+  document.getElementById("fill").style.width = percent + "%";
+
+  document.getElementById("status").innerText =
+    balance >= GOAL ? "✔ Can buy camera" : "❌ Keep saving";
+
+  localStorage.setItem("balance", balance);
+}
+
+function add() {
+  let val = Number(document.getElementById("amount").value);
+  balance += val;
+  update();
+}
+
+function spend() {
+  let val = Number(document.getElementById("amount").value);
+  balance -= val;
+  update();
+}
+
+function resetBalance() {
+  balance = 0;
+  update();
+}
+
+// 初始化
+update();
+</script>
+
+</body>
+</html>
